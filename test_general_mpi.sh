@@ -110,7 +110,6 @@ do
 done
 
 
-
 echo "Start mpi job"
 
 if [ -z "${FILENAME}" ]; then
@@ -123,7 +122,7 @@ MPIPROC_PER_NODE=$((2*${TRAN_PROCESSES_PER_NODE}))
 TOTAL=$((${NODES}*${MPIPROC_PER_NODE}))
 MPIPROC_PER_SOCKET=$((${MPIPROC_PER_NODE}/${SOCKETS_PER_NODE}))
 
-mpirun -np ${TOTAL} -npersocket ${MPIPROC_PER_SOCKET} ${MPIARGS} ${WORKDIR}/HumongousLock/release/hdb-lock --synthetic --remotelockprob=${REMOTEPROB} \
+mpirun -np ${TOTAL} ${MPIARGS} ${WORKDIR}/HumongousLock/release/hdb-lock --synthetic --remotelockprob=${REMOTEPROB} \
 								--timelimit=${TIMELIMIT} \
 								--warehouses=${NUMWHS} \
 								--processespernode=${TRAN_PROCESSES_PER_NODE} \

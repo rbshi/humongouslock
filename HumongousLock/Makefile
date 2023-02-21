@@ -5,7 +5,10 @@ SCRIPT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 ########################################
 
-DEBUG ?= 0   # Set to 0 if unset
+CXXFLAGS += -I $(HOME)/tools/mpich_ucx/include
+LDFLAGS += -L$(HOME)/tools/mpich_ucx/lib
+
+DEBUG ?= 1   # Set to 0 if unset
 ifeq ($(DEBUG), 1)
     CXXFLAGS += -g3 -DDEBUG
     LDFLAGS += -g
@@ -138,7 +141,7 @@ program: $(OBJECT_FILES)
 
 preprocess:
 	mkdir -p $(RELEASE_FOLDER)
-	$(COMPILER) src/hdb/preprocess.cpp src/hdb/transactions/Transaction.cpp -DNDEBUG -O3 -std=c++0x -march=native -mtune=native -I src/ $(BOOST_INCLUDE) $(BOOSTLD) -o $(RELEASE_FOLDER)/preprocess
+	$(COMPILER) src/hdb/preprocess.cpp src/hdb/transactions/Transaction.cpp -DNDEBUG -O3 -std=c++0x -march=native -mtune=native -I src/ $(BOOST_INCLUDE) $(LDFLAGS) $(BOOSTLD) -o $(RELEASE_FOLDER)/preprocess
 
 ########################################
 clean:

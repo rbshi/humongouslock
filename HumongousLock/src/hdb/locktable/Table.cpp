@@ -609,7 +609,7 @@ void TableTimestamp::releaseTransaction(hdb::messages::TransactionEnd* endTransa
 		size_t removed = row->prewrites.erase(TS);
 		assert(removed && "The TS must be in prewrites");
 		// update write timestamp;
-        row->wts = std::max(row->wts,TS);
+        	row->wts = std::max(row->wts,TS);
  
 		trigger(minpts,row);
 	}

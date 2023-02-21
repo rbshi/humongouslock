@@ -196,7 +196,7 @@ LockReturn LockWaitDie::insertNewRequest(hdb::messages::LockRequest request, hdb
 	} else if (requestQueue.empty() && LOCK_MODE_COMPATIBLE(currentMode, request.mode)) {
 		instantGrant(request, grant);
 		return LockReturn::Granted;
-	} else if (request.GetGlobalTransactionId() < this->version ){
+	} else if (request.GetGlobalTransactionId() < this->version ){ // fixme: should it be > ?
 		instantExpire(request, grant);
 		return LockReturn::Expired;
 	}

@@ -65,15 +65,20 @@ void generate(uint32_t wh, uint32_t numberOfTransactions, uint32_t clientsPerWar
 
         uint64_t transactionId;
         uint64_t lockId;
-        char lockMode[2];
-        char queryType[16];
+        char* lockMode;
+        char* queryType;
 
         char lineBuffer[128];
         bool validRead = (fgets(lineBuffer, sizeof(lineBuffer), file) != NULL);
 
         if(validRead){
-            int readItems = sscanf(lineBuffer, "%lu,%lu,%2[^,],%s", &transactionId, &lockId, lockMode, queryType);
-            validRead = (readItems == 4);
+            transactionId = strtol(strtok(lineBuffer, ","),NULL,10);
+            lockId = strtol(strtok(NULL, ","),NULL,10);
+            lockMode = strtok(NULL, ",");
+            queryType = strtok(NULL, ",");
+            // int readItems = sscanf(lineBuffer, "%lu,%lu, %[^,\n], %s", &transactionId, &lockId, lockMode, queryType);
+            // validRead = (readItems == 4);
+            validRead = true;
         }
         if (!validRead) {
             if (skip != transactionId && item != NULL) {
@@ -133,7 +138,6 @@ void generate(uint32_t wh, uint32_t numberOfTransactions, uint32_t clientsPerWar
         if(lm == hdb::locktable::LockMode::NL){
             printf("Warning! Lock is unidentified %s from string %s\n",lockMode,lineBuffer);
         }
-//      DLOG("ReplayClient", "Read workload item (%lu %lu %s %s).", transactionId, lockId, lockMode, queryType);
         item->requests.push_back(lockid_mode_pair_t(lockId, lm));
     }
 

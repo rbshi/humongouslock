@@ -68,10 +68,12 @@ void TransactionAgent::tpccExecute(uint32_t warehouse, uint32_t workloadSize) {
 		manager->start_time=std::chrono::high_resolution_clock::now();
 
 		auto endtime = manager->start_time + std::chrono::seconds(config->timelimit);
-		
+
 		for (uint64_t txId = 0; txId < workloadSize; ++txId) {
+
 			hdb::transactions::Transaction *transaction = &transactions[txId % numberoftransactions];
 			manager->startTransaction();
+
 			uint64_t lockSize = transaction->requests.size();
 			bool success = true;
 

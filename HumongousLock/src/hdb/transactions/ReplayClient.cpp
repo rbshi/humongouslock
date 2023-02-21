@@ -81,6 +81,7 @@ void ReplayClient::generate() {
 
     
     std::ifstream ifs(copyOfStr.c_str());
+
     if(ifs.good()) { // file exist 
      	boost::archive::binary_iarchive ia(ifs);
      	uint32_t size = 0;
@@ -96,6 +97,7 @@ void ReplayClient::generate() {
 	sprintf(fileName, "%s/wh%06d.csv", fileLocation.c_str(), this->warehouseId + 1 );
 	FILE *file = fopen(fileName, "r");
 
+	DLOG_ALWAYS("ReplayClient", "Parsing trace...");
 
 	while (transactions.size() < numberOfTransactions) {
 
