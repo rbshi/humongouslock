@@ -17,8 +17,8 @@ class AbortTransaction : public Message {
 
 public:
 
-	AbortTransaction(uint32_t clientGlobalRank = 0, uint64_t transactionNumber = 0);
-	virtual ~AbortTransaction();
+    AbortTransaction(uint32_t clientGlobalRank = 0, uint64_t transactionNumber = 0);
+    virtual ~AbortTransaction();
 
 };
 

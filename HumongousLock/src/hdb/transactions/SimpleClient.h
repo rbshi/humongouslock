@@ -20,20 +20,21 @@ class SimpleClient : public TransactionAgent {
 
 public:
 
-	SimpleClient(hdb::configuration::SystemConfig *config, uint64_t numberOfTransactions, uint64_t numberOfLocksPerTransaction, uint32_t remoteprob);
-	virtual ~SimpleClient();
+    SimpleClient(hdb::configuration::SystemConfig *config, uint64_t numberOfTransactions, uint64_t numberOfLocksPerTransaction, uint32_t remoteprob);
+    virtual ~SimpleClient();
 
 public:
 
-	void generate();
-	void execute();
+    void generate();
+    void generateTPCC();
+    void execute();
 
 protected:
-	uint32_t remoteprob;
-	uint32_t tableRangeStart;
-	uint32_t NumberOfLocksOnThisMachine;
-	uint64_t numberOfTransactions;
-	uint64_t numberOfLocksPerTransaction;
+    uint32_t remoteprob;
+    uint32_t tableRangeStart;
+    uint32_t NumberOfLocksOnThisMachine;
+    uint64_t numberOfTransactions;
+    uint64_t numberOfLocksPerTransaction;
 
 };
 

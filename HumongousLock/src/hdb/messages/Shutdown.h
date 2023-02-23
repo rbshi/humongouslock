@@ -19,8 +19,8 @@ class Shutdown : public Message {
 
 public:
 
-	Shutdown(uint32_t clientGlobalRank);
-	virtual ~Shutdown();
+    Shutdown(uint32_t clientGlobalRank);
+    virtual ~Shutdown();
 };
 
 } /* namespace messages */

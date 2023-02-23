@@ -23,27 +23,27 @@ class LockTableAgent {
 
 public:
 
-	LockTableAgent(hdb::configuration::SystemConfig *config);
-	virtual ~LockTableAgent();
+    LockTableAgent(hdb::configuration::SystemConfig *config);
+    virtual ~LockTableAgent();
 
 public:
 
-	void execute();
+    void execute();
 
 protected:
 
-	hdb::configuration::SystemConfig *config;
-	hdb::communication::Communicator *communicator;
+    hdb::configuration::SystemConfig *config;
+    hdb::communication::Communicator *communicator;
 
 protected:
 
-	hdb::locktable::Table *table;
+    hdb::locktable::Table *table;
 
 protected:
 
-	void processMessage(hdb::messages::Message *message);
+    void processMessage(hdb::messages::Message *message);
 
-	uint32_t remainingClients;
+    uint32_t remainingClients;
 
 };
 

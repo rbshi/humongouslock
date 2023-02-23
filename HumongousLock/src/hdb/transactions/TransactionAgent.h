@@ -24,35 +24,35 @@ class TransactionAgent {
 
 public:
 
-	TransactionAgent(hdb::configuration::SystemConfig *config);
-	virtual ~TransactionAgent();
+    TransactionAgent(hdb::configuration::SystemConfig *config);
+    virtual ~TransactionAgent();
 
 public:
 
-	virtual void generate() = 0;
-	virtual void execute() = 0;
+    virtual void generate() = 0;
+    virtual void execute() = 0;
  
-	void shutdown();
+    void shutdown();
 
-	void tpccExecute(uint32_t warehouse, uint32_t workloadSize);
-
-public:
-
-	void debugPrintTransactions();
+    void tpccExecute(uint32_t warehouse, uint32_t workloadSize);
 
 public:
 
-	hdb::stats::ClientStats stats;
+    void debugPrintTransactions();
+
+public:
+
+    hdb::stats::ClientStats stats;
 
 protected:
 
-	hdb::configuration::SystemConfig *config;
-	hdb::communication::Communicator *communicator;
-	hdb::transactions::TransactionManager *manager;
+    hdb::configuration::SystemConfig *config;
+    hdb::communication::Communicator *communicator;
+    hdb::transactions::TransactionManager *manager;
 
 protected:
 
-	std::vector<hdb::transactions::Transaction> transactions;
+    std::vector<hdb::transactions::Transaction> transactions;
 
 };
 

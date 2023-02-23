@@ -29,24 +29,24 @@ namespace transactions {
 
 
 enum DataMode: uint8_t {
-	NONE = 0, NEWORD = 1, PAYMENT = 2, ORDSTAT = 3, DELIVERY = 4 , SLEV = 5, YCSB = 6
+    NONE = 0, NEWORD = 1, PAYMENT = 2, ORDSTAT = 3, DELIVERY = 4 , SLEV = 5, YCSB = 6
 };
 
 static DataMode DATA_MODE_FROM_STRING(char *dataMode) {
 
-		if(strcmp(dataMode,"neword") == 0) {
-			return DataMode::NEWORD;
-		} else if (strcmp(dataMode,"payment") == 0) {
-			return DataMode::PAYMENT;
-		} else if (strcmp(dataMode,"ordstat") == 0) {
-			return DataMode::ORDSTAT;
-		} else if (strcmp(dataMode,"delivery") == 0) {
-			return DataMode::DELIVERY;
-		} else if (strcmp(dataMode,"slev") == 0) {
-			return DataMode::SLEV;
-		} else {
-			return DataMode::YCSB;
-		}
+        if(strcmp(dataMode,"neword") == 0) {
+            return DataMode::NEWORD;
+        } else if (strcmp(dataMode,"payment") == 0) {
+            return DataMode::PAYMENT;
+        } else if (strcmp(dataMode,"ordstat") == 0) {
+            return DataMode::ORDSTAT;
+        } else if (strcmp(dataMode,"delivery") == 0) {
+            return DataMode::DELIVERY;
+        } else if (strcmp(dataMode,"slev") == 0) {
+            return DataMode::SLEV;
+        } else {
+            return DataMode::YCSB;
+        }
 }
 
 
@@ -54,21 +54,21 @@ class Transaction {
 
 public:
 
-	Transaction(hdb::transactions::DataMode transactionTypeId = hdb::transactions::DataMode::NONE);
+    Transaction(hdb::transactions::DataMode transactionTypeId = hdb::transactions::DataMode::NONE);
 
 public:
 
-	hdb::transactions::DataMode transactionTypeId;
-	std::vector<lockid_mode_pair_t> requests;
+    hdb::transactions::DataMode transactionTypeId;
+    std::vector<lockid_mode_pair_t> requests;
 private:   
     friend class boost::serialization::access;
-	  
-	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
-	{
-	    ar & transactionTypeId;
-	    ar & requests;
-	}
+      
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & transactionTypeId;
+        ar & requests;
+    }
 
 
 };

@@ -11,7 +11,7 @@ namespace hdb {
 namespace transactions {
 
 Transaction::Transaction(hdb::transactions::DataMode transactionTypeId) {
-	this->transactionTypeId = transactionTypeId;
+    this->transactionTypeId = transactionTypeId;
 }
  
 

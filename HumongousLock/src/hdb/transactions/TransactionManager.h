@@ -28,49 +28,49 @@ class TransactionManager {
 
 public:
 
-	TransactionManager(hdb::configuration::SystemConfig *config, hdb::communication::Communicator *communicator, hdb::stats::ClientStats *stats);
-	virtual ~TransactionManager();
+    TransactionManager(hdb::configuration::SystemConfig *config, hdb::communication::Communicator *communicator, hdb::stats::ClientStats *stats);
+    virtual ~TransactionManager();
 
 public:
 
-	void startTransaction();
-	void abortTransaction(hdb::transactions::DataMode  txId);
-	void commitTransaction(hdb::transactions::DataMode  txId);
+    void startTransaction();
+    void abortTransaction(hdb::transactions::DataMode  txId);
+    void commitTransaction(hdb::transactions::DataMode  txId);
 
 public:
 
-	bool requestLock(uint64_t lockId, hdb::locktable::LockMode mode);
+    bool requestLock(uint64_t lockId, hdb::locktable::LockMode mode);
 
 public:
 
-	uint64_t transactionId;
-	std::set<uint32_t> involvedLockServers;
-	std::set<uint32_t> involvedVoteServers;
+    uint64_t transactionId;
+    std::set<uint32_t> involvedLockServers;
+    std::set<uint32_t> involvedVoteServers;
 
-	uint64_t transaction_time;
-	std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
-	
-	
-	bool voteNeeded;
+    uint64_t transaction_time;
+    std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+    
+    
+    bool voteNeeded;
 
 protected:
     const bool timestampordering;
-	hdb::communication::Communicator *communicator;
-	hdb::stats::ClientStats *stats;
+    hdb::communication::Communicator *communicator;
+    hdb::stats::ClientStats *stats;
 
-	uint32_t globalRank;
-	uint32_t *lockServerGlobalRanks;
-	uint32_t locksPerWarehouse;
-	const bool randomLockAssign;
-	const uint32_t globalNumberOfWarehouses;
+    uint32_t globalRank;
+    uint32_t *lockServerGlobalRanks;
+    uint32_t locksPerWarehouse;
+    const bool randomLockAssign;
+    const uint32_t globalNumberOfWarehouses;
 
-	std::vector<uint32_t>& warehouseToLockServer;
+    std::vector<uint32_t>& warehouseToLockServer;
 protected:
 
-	hdb::messages::AbortTransaction abortRequest;
-	hdb::messages::TransactionEnd endTransaction;
-	hdb::messages::VoteRequest voteRequest;
-	hdb::messages::LockRequest lockRequest;
+    hdb::messages::AbortTransaction abortRequest;
+    hdb::messages::TransactionEnd endTransaction;
+    hdb::messages::VoteRequest voteRequest;
+    hdb::messages::LockRequest lockRequest;
 
 };
 

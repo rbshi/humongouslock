@@ -22,37 +22,37 @@ class Communicator {
 
 public:
 
-	Communicator(hdb::configuration::SystemConfig *config);
-	virtual ~Communicator();
+    Communicator(hdb::configuration::SystemConfig *config);
+    virtual ~Communicator();
 
 public:
 
-	hdb::communication::DataLayer *dataLayer;
+    hdb::communication::DataLayer *dataLayer;
 
 protected:
 #ifdef USE_FOMPI
-	hdb::communication::NotifiedCommunicator *notifiedCommunicator;
-	//hdb::communication::HybridCommunicator *notifiedCommunicator;
+    hdb::communication::NotifiedCommunicator *notifiedCommunicator;
+    //hdb::communication::HybridCommunicator *notifiedCommunicator;
 #else
-	hdb::communication::SendReceiveCommunicator *notifiedCommunicator;
+    hdb::communication::SendReceiveCommunicator *notifiedCommunicator;
 #endif
-	hdb::communication::VoteCommunicator *voteCommunictor;
+    hdb::communication::VoteCommunicator *voteCommunictor;
 
 public:
 
-	bool sendMessage(hdb::messages::Message *message, uint32_t targetRank);
-	hdb::messages::Message * getMessage();
-	hdb::messages::Message * getMessageBlocking();
+    bool sendMessage(hdb::messages::Message *message, uint32_t targetRank);
+    hdb::messages::Message * getMessage();
+    hdb::messages::Message * getMessageBlocking();
 
 public:
 
-	void vote(uint32_t targetRank, bool outcome);
-	bool checkVoteReady(bool *outcome, uint32_t targetCount);
+    void vote(uint32_t targetRank, bool outcome);
+    bool checkVoteReady(bool *outcome, uint32_t targetCount);
 
 public:
 
-	void signalTransactionEnd(uint32_t targetRank);
-	void waitForTransactionEndSignals(uint32_t targetCount);
+    void signalTransactionEnd(uint32_t targetRank);
+    void waitForTransactionEndSignals(uint32_t targetCount);
 
 };
 

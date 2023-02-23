@@ -19,8 +19,8 @@ class TransactionEnd : public Message {
 
 public:
 
-	TransactionEnd(uint32_t clientGlobalRank = 0, uint64_t transactionNumber = 0);
-	virtual ~TransactionEnd();
+    TransactionEnd(uint32_t clientGlobalRank = 0, uint64_t transactionNumber = 0);
+    virtual ~TransactionEnd();
 
 };
 

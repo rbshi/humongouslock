@@ -23,39 +23,39 @@ class HybridCommunicator {
 
 public:
 
-	HybridCommunicator(hdb::configuration::SystemConfig *config);
-	virtual ~HybridCommunicator();
+    HybridCommunicator(hdb::configuration::SystemConfig *config);
+    virtual ~HybridCommunicator();
 
 protected:
 
-	uint32_t windowSizeInSlots;
-	void *buffer;
-	foMPI_Win window;
+    uint32_t windowSizeInSlots;
+    void *buffer;
+    foMPI_Win window;
 
 protected:
 
-	foMPI_Request request;
-	MPI_Status status;
+    foMPI_Request request;
+    MPI_Status status;
 
 protected:
 
-	void** receiveBuffer;
-	uint32_t Slots;
+    void** receiveBuffer;
+    uint32_t Slots;
     MPI_Request *requests;
 
 public:
-	const uint32_t comdelay;
-	bool sendMessage(hdb::messages::Message *message, uint32_t targetGlobalRank);
-	hdb::messages::Message * getMessage();
-	hdb::messages::Message * getMessageBlocking();
+    const uint32_t comdelay;
+    bool sendMessage(hdb::messages::Message *message, uint32_t targetGlobalRank);
+    hdb::messages::Message * getMessage();
+    hdb::messages::Message * getMessageBlocking();
 
 protected:
 
-	uint32_t globalRank;
-	uint32_t internalRank;
-	uint32_t localMachineId;
-	uint32_t numberOfProcessesPerMachine;
-	bool isLockServerEndPoint;
+    uint32_t globalRank;
+    uint32_t internalRank;
+    uint32_t localMachineId;
+    uint32_t numberOfProcessesPerMachine;
+    bool isLockServerEndPoint;
 
 
 };

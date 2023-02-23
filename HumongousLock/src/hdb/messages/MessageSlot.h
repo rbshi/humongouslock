@@ -17,7 +17,7 @@ namespace messages {
 
 struct MessageSlot {
         uint64_t valid;
-	char data[MAX_MESSAGE_SIZE];
+    char data[MAX_MESSAGE_SIZE];
 
 } __attribute__((aligned(64)));
 

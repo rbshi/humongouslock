@@ -19,12 +19,12 @@ class LockRelease : public Message {
 
 public:
 
-	LockRelease(uint32_t clientGlobalRank, uint64_t transactionNumber, uint64_t lockId);
-	virtual ~LockRelease();
+    LockRelease(uint32_t clientGlobalRank, uint64_t transactionNumber, uint64_t lockId);
+    virtual ~LockRelease();
 
 public:
 
-	uint64_t lockId;
+    uint64_t lockId;
 };
 
 } /* namespace messages */

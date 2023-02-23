@@ -12,12 +12,12 @@ namespace messages {
 
 LockRelease::LockRelease(uint32_t clientGlobalRank, uint64_t transactionNumber, uint64_t lockId) : Message(LOCK_RELEASE_MESSAGE, sizeof(LockRelease), clientGlobalRank, transactionNumber) {
 
-	this->lockId = lockId;
+    this->lockId = lockId;
 
 }
 
 LockRelease::~LockRelease() {
-	// TODO Auto-generated destructor stub
+    // TODO Auto-generated destructor stub
 }
 
 } /* namespace messages */

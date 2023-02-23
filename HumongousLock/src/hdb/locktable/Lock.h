@@ -24,7 +24,7 @@ namespace locktable {
 
 
 enum LockReturn {
-	Granted = 0, Expired = 1, Queued = 2
+    Granted = 0, Expired = 1, Queued = 2
 };
 
 
@@ -32,33 +32,33 @@ class Lock2PL {
 
 public:
 
-	Lock2PL();
-	Lock2PL(uint32_t lockOffset);
+    Lock2PL();
+    Lock2PL(uint32_t lockOffset);
 
 public:
 
-	uint32_t lockOffset;
-	hdb::locktable::LockMode currentMode;
+    uint32_t lockOffset;
+    hdb::locktable::LockMode currentMode;
 
 protected:
 
-	uint32_t grantedCounters[hdb::locktable::LockMode::MODE_COUNT];
-	std::queue<hdb::messages::LockRequest, 
-						std::list<hdb::messages::LockRequest> > requestQueue;
+    uint32_t grantedCounters[hdb::locktable::LockMode::MODE_COUNT];
+    std::queue<hdb::messages::LockRequest, 
+                        std::list<hdb::messages::LockRequest> > requestQueue;
 
 public:
 
-	bool insertNewRequest(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
-	bool processNextElementFromQueue(hdb::messages::LockGrant *grant);
-	void releaseLock(hdb::locktable::LockMode modeToRelease);
+    bool insertNewRequest(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
+    bool processNextElementFromQueue(hdb::messages::LockGrant *grant);
+    void releaseLock(hdb::locktable::LockMode modeToRelease);
 
-	bool processExpiredElementsFromQueue(hdb::messages::LockGrant *grant);
-	bool queueHasPendingElements();
+    bool processExpiredElementsFromQueue(hdb::messages::LockGrant *grant);
+    bool queueHasPendingElements();
 
 protected:
 
-	void computeLockMode();
-	void instantGrant(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
+    void computeLockMode();
+    void instantGrant(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
 };
 
 
@@ -69,45 +69,45 @@ class LockWaitDie {
 
 public:
 
-	LockWaitDie();
-	LockWaitDie(uint32_t lockOffset);
+    LockWaitDie();
+    LockWaitDie(uint32_t lockOffset);
 
 public:
 
-	uint32_t lockOffset;
- 	uint64_t version;
-	hdb::locktable::LockMode currentMode;
+    uint32_t lockOffset;
+     uint64_t version;
+    hdb::locktable::LockMode currentMode;
 
 protected:
 
-	uint32_t grantedCounters[hdb::locktable::LockMode::MODE_COUNT];
+    uint32_t grantedCounters[hdb::locktable::LockMode::MODE_COUNT];
 
-	std::priority_queue<hdb::messages::LockRequest, 
-						std::deque<hdb::messages::LockRequest>, 
-						std::greater<std::deque<hdb::messages::LockRequest>::value_type>> requestQueue;
-
-public:
-
-	LockReturn insertNewRequest(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
-	bool processNextElementFromQueue(hdb::messages::LockGrant *grant);
-	void releaseLock(hdb::locktable::LockMode modeToRelease);
-
-
-	bool checkTimestamp(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
-	uint64_t GetTimestamp(hdb::locktable::LockMode mode);
-	void UpdateTimestamp(hdb::locktable::LockMode mode, uint64_t timestamp);
-
+    std::priority_queue<hdb::messages::LockRequest, 
+                        std::deque<hdb::messages::LockRequest>, 
+                        std::greater<std::deque<hdb::messages::LockRequest>::value_type>> requestQueue;
 
 public:
 
-	bool processExpiredElementsFromQueue(hdb::messages::LockGrant *grant);
-	bool queueHasPendingElements();
+    LockReturn insertNewRequest(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
+    bool processNextElementFromQueue(hdb::messages::LockGrant *grant);
+    void releaseLock(hdb::locktable::LockMode modeToRelease);
+
+
+    bool checkTimestamp(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
+    uint64_t GetTimestamp(hdb::locktable::LockMode mode);
+    void UpdateTimestamp(hdb::locktable::LockMode mode, uint64_t timestamp);
+
+
+public:
+
+    bool processExpiredElementsFromQueue(hdb::messages::LockGrant *grant);
+    bool queueHasPendingElements();
 
 protected:
 
-	void computeLockMode();
-	void instantGrant(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
-	void instantExpire(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
+    void computeLockMode();
+    void instantGrant(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
+    void instantExpire(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
 
 };
 
@@ -115,30 +115,30 @@ class LockNoWait {
 
 public:
 
-	LockNoWait();
-	LockNoWait(uint32_t lockOffset);
+    LockNoWait();
+    LockNoWait(uint32_t lockOffset);
 
 public:
 
-	uint32_t lockOffset;
-	hdb::locktable::LockMode currentMode;
+    uint32_t lockOffset;
+    hdb::locktable::LockMode currentMode;
 
 protected:
 
-	uint32_t grantedCounters[hdb::locktable::LockMode::MODE_COUNT];
+    uint32_t grantedCounters[hdb::locktable::LockMode::MODE_COUNT];
 
 
 public:
 
-	bool insertNewRequest(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
-	bool processNextElementFromQueue(hdb::messages::LockGrant *grant);
-	void releaseLock(hdb::locktable::LockMode modeToRelease);
+    bool insertNewRequest(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
+    bool processNextElementFromQueue(hdb::messages::LockGrant *grant);
+    void releaseLock(hdb::locktable::LockMode modeToRelease);
 
 protected:
 
-	void computeLockMode();
-	void instantGrant(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
-	void instantExpire(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
+    void computeLockMode();
+    void instantGrant(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
+    void instantExpire(hdb::messages::LockRequest request, hdb::messages::LockGrant* grant);
 
 };
 
@@ -147,20 +147,20 @@ class Row {
 
 public:
 
-	Row();
+    Row();
  
  
 public:
-	uint64_t rts; // read timestamp 
-	uint64_t wts; // write timestamp
+    uint64_t rts; // read timestamp 
+    uint64_t wts; // write timestamp
 
-	std::set<uint64_t> reads;
-	std::set<uint64_t> writes;
-	std::set<uint64_t> prewrites;
+    std::set<uint64_t> reads;
+    std::set<uint64_t> writes;
+    std::set<uint64_t> prewrites;
 
 
-	// it is used only for waiting S (read) requests
-	std::map<uint64_t, hdb::messages::LockRequest> pendingreq;
+    // it is used only for waiting S (read) requests
+    std::map<uint64_t, hdb::messages::LockRequest> pendingreq;
 };
 
 

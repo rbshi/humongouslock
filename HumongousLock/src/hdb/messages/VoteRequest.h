@@ -19,8 +19,8 @@ class VoteRequest : public Message {
 
 public:
 
-	VoteRequest(uint32_t clientGlobalRank = 0, uint64_t transactionNumber = 0);
-	virtual ~VoteRequest();
+    VoteRequest(uint32_t clientGlobalRank = 0, uint64_t transactionNumber = 0);
+    virtual ~VoteRequest();
 
 };
 

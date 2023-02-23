@@ -24,27 +24,27 @@ class ReplayClient: public TransactionAgent {
 
 public:
 
-	ReplayClient(hdb::configuration::SystemConfig *config, std::string fileLocation, uint64_t numberOfTransactions);
-	virtual ~ReplayClient();
+    ReplayClient(hdb::configuration::SystemConfig *config, std::string fileLocation, uint64_t numberOfTransactions);
+    virtual ~ReplayClient();
 
 public:
 
-	void generate();
-	void execute();
+    void generate();
+    void execute();
 
 protected:
 
-	uint32_t warehouseId;
-	uint32_t clientId;
+    uint32_t warehouseId;
+    uint32_t clientId;
 
-	uint64_t localclientid;
-	uint64_t clientsPerWarehouse;
+    uint64_t localclientid;
+    uint64_t clientsPerWarehouse;
 
 
-	
-	std::string fileLocation;
-	uint64_t numberOfTransactions;
-	uint64_t globalTableSize;
+    
+    std::string fileLocation;
+    uint64_t numberOfTransactions;
+    uint64_t globalTableSize;
 
 };
 

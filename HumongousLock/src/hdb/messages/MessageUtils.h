@@ -20,23 +20,23 @@ namespace messages {
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
-#define MAX_MESSAGE_SIZE (MAX(																		\
-							sizeof(hdb::messages::LockRequest),										\
-							MAX (																	\
-								sizeof(hdb::messages::LockGrant),									\
-								MAX (																\
-									sizeof(hdb::messages::LockRelease),								\
-									MAX (															\
-										sizeof(hdb::messages::VoteRequest),							\
-										MAX (														\
-											sizeof(hdb::messages::TransactionEnd),					\
-											sizeof(hdb::messages::Shutdown)							\
-											)														\
-										)															\
-									)																\
-								)																	\
-							)																		\
-						)
+#define MAX_MESSAGE_SIZE (MAX(                                                                        \
+                            sizeof(hdb::messages::LockRequest),                                        \
+                            MAX (                                                                    \
+                                sizeof(hdb::messages::LockGrant),                                    \
+                                MAX (                                                                \
+                                    sizeof(hdb::messages::LockRelease),                                \
+                                    MAX (                                                            \
+                                        sizeof(hdb::messages::VoteRequest),                            \
+                                        MAX (                                                        \
+                                            sizeof(hdb::messages::TransactionEnd),                    \
+                                            sizeof(hdb::messages::Shutdown)                            \
+                                            )                                                        \
+                                        )                                                            \
+                                    )                                                                \
+                                )                                                                    \
+                            )                                                                        \
+                        )
 
 } /* namespace messages */
 } /* namespace hdb */

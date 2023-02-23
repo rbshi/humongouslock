@@ -14,20 +14,20 @@ namespace messages {
 
 LockRequest::LockRequest(uint32_t clientGlobalRank, uint64_t transactionNumber, uint64_t lockId, hdb::locktable::LockMode mode) : Message(LOCK_REQUEST_MESSAGE, sizeof(LockRequest), clientGlobalRank, transactionNumber) {
 
-	this->lockId = lockId;
-	this->mode = mode;
+    this->lockId = lockId;
+    this->mode = mode;
 
 #ifdef USE_LOGGING
-	this->clientSendTime = 0;
-	this->serverReceiveTime = 0;
-	this->serverEnqueueTime = 0;
-	this->serverDequeueTime = 0;
+    this->clientSendTime = 0;
+    this->serverReceiveTime = 0;
+    this->serverEnqueueTime = 0;
+    this->serverDequeueTime = 0;
 #endif
 
 }
 
 uint64_t LockRequest::GetGlobalTransactionId() const{
-	return transactionNumber;
+    return transactionNumber;
 }
 
 bool operator < (const LockRequest& lhs, const LockRequest& rhs)
@@ -46,11 +46,11 @@ LockRequest::~LockRequest() {
 }
 
 bool LockRequest::requestExpired() {
-	return (expiryTime < std::chrono::high_resolution_clock::now());
+    return (expiryTime < std::chrono::high_resolution_clock::now());
 }
 
 void LockRequest::setExpiryTime() {
-	expiryTime = std::chrono::high_resolution_clock::now() + std::chrono::milliseconds(REQUEST_TIME_OUT_MS);
+    expiryTime = std::chrono::high_resolution_clock::now() + std::chrono::milliseconds(REQUEST_TIME_OUT_MS);
 }
 
 } /* namespace messages */

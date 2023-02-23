@@ -19,24 +19,24 @@ namespace messages {
 class LockGrant : public Message {
 public:
 
-	LockGrant(uint32_t clientGlobalRank, uint64_t transactionNumber, uint64_t lockId, hdb::locktable::LockMode mode, bool granted = true);
-	virtual ~LockGrant();
+    LockGrant(uint32_t clientGlobalRank, uint64_t transactionNumber, uint64_t lockId, hdb::locktable::LockMode mode, bool granted = true);
+    virtual ~LockGrant();
 
 public:
 
-	uint64_t lockId;
-	hdb::locktable::LockMode mode;
-	bool granted;
+    uint64_t lockId;
+    hdb::locktable::LockMode mode;
+    bool granted;
 
 #ifdef USE_LOGGING
 public:
 
-	uint64_t clientSendTime;
-	uint64_t serverReceiveTime;
-	uint64_t serverEnqueueTime;
-	uint64_t serverDequeueTime;
-	uint64_t serverSendTime;
-	uint64_t clientReceiveTime;
+    uint64_t clientSendTime;
+    uint64_t serverReceiveTime;
+    uint64_t serverEnqueueTime;
+    uint64_t serverDequeueTime;
+    uint64_t serverSendTime;
+    uint64_t clientReceiveTime;
 
 #endif
 

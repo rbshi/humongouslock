@@ -24,29 +24,29 @@ class VoteCommunicator {
 
 public:
 
-	VoteCommunicator(hdb::configuration::SystemConfig* config);
-	virtual ~VoteCommunicator();
+    VoteCommunicator(hdb::configuration::SystemConfig* config);
+    virtual ~VoteCommunicator();
 
 protected:
 
-	volatile uint64_t voteCounter;
+    volatile uint64_t voteCounter;
 #ifdef USE_FOMPI
-	foMPI_Win windowObject;
+    foMPI_Win windowObject;
 #else
-	MPI_Win windowObject;
+    MPI_Win windowObject;
 #endif
 
 protected:
 
-	uint32_t globalRank;
-	uint32_t numberOfProcessesPerMachine;
-	uint32_t localMachineId;
+    uint32_t globalRank;
+    uint32_t numberOfProcessesPerMachine;
+    uint32_t localMachineId;
 
 public:
-	const uint32_t comdelay;
-	void vote(uint32_t targetRank, bool outcome);
-	bool checkVoteReady(bool *outcome, uint32_t targetCount);
-	void reset();
+    const uint32_t comdelay;
+    void vote(uint32_t targetRank, bool outcome);
+    bool checkVoteReady(bool *outcome, uint32_t targetCount);
+    void reset();
 
 };
 

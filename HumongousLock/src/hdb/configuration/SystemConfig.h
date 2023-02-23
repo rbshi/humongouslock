@@ -23,39 +23,39 @@ class SystemConfig {
 
 public:
 
-	MPI_Comm localCommunicator;
+    MPI_Comm localCommunicator;
  
-	std::vector<std::string> transaction_constraints; 
-	uint32_t comdelay; 
-	bool waitdie;
-	bool nowait;
-	bool timestamp;
-	bool hashlock;
+    std::vector<std::string> transaction_constraints; 
+    uint32_t comdelay; 
+    bool waitdie;
+    bool nowait;
+    bool timestamp;
+    bool hashlock;
 
-	bool isLockTableAgent;
+    bool isLockTableAgent;
     bool syntheticmode;
 
     uint32_t timelimit;
-	uint32_t numberOfNodes;
+    uint32_t numberOfNodes;
 
-	int32_t globalRank;
-	int32_t globalNumberOfProcesses;
+    int32_t globalRank;
+    int32_t globalNumberOfProcesses;
 
-	int32_t localRank;
-	int32_t localNumberOfProcesses;
+    int32_t localRank;
+    int32_t localNumberOfProcesses;
 
-	uint32_t locksPerWarehouse;
-	uint32_t locksOnThisAgent;
-	uint32_t globalNumberOfLocks;
-	uint32_t globalNumberOfWarehouses;
-	uint32_t globalNumberOfTransactionAgents;
+    uint32_t locksPerWarehouse;
+    uint32_t locksOnThisAgent;
+    uint32_t globalNumberOfLocks;
+    uint32_t globalNumberOfWarehouses;
+    uint32_t globalNumberOfTransactionAgents;
 
-	uint32_t internalRank;
-	uint32_t globalNumberOfLockTableAgents;
-	uint32_t *lockServerGlobalRanks;
+    uint32_t internalRank;
+    uint32_t globalNumberOfLockTableAgents;
+    uint32_t *lockServerGlobalRanks;
 
-	std::vector<uint32_t> warehouseToLockServer;
-	std::vector<uint32_t> AllLocksPerAgent;
+    std::vector<uint32_t> warehouseToLockServer;
+    std::vector<uint32_t> AllLocksPerAgent;
 
 };
 

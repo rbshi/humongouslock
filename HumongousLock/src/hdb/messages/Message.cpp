@@ -12,15 +12,15 @@ namespace messages {
 
 Message::Message(MessageType messageType, uint32_t messageSize, uint32_t clientGlobalRank, uint64_t transactionNumber) {
 
-	this->messageType = messageType;
-	this->messageSize = messageSize;
-	this->clientGlobalRank = clientGlobalRank;
-	this->transactionNumber = transactionNumber;
+    this->messageType = messageType;
+    this->messageSize = messageSize;
+    this->clientGlobalRank = clientGlobalRank;
+    this->transactionNumber = transactionNumber;
 
 }
 
 Message::~Message() {
-	// TODO Auto-generated destructor stub
+    // TODO Auto-generated destructor stub
 }
 
 } /* namespace messages */

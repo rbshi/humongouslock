@@ -17,38 +17,38 @@ namespace hdb {
 namespace transactions {
 
 ReplayClient::ReplayClient(hdb::configuration::SystemConfig* config, std::string fileLocation, uint64_t numberOfTransactions) :
-		TransactionAgent(config) {
+        TransactionAgent(config) {
 
-	this->numberOfTransactions = numberOfTransactions;
+    this->numberOfTransactions = numberOfTransactions;
 
   
-	this->clientId = config->internalRank; 
-	
-	uint32_t clientsPerWarehouse =  config->globalNumberOfTransactionAgents / config->globalNumberOfWarehouses;
-	
-	if(clientsPerWarehouse == 0){
+    this->clientId = config->internalRank; 
+    
+    uint32_t clientsPerWarehouse =  config->globalNumberOfTransactionAgents / config->globalNumberOfWarehouses;
+    
+    if(clientsPerWarehouse == 0){
         float delta = (float)config->globalNumberOfWarehouses / (float)config->globalNumberOfTransactionAgents;
-		this->warehouseId = static_cast<uint32_t>(this->clientId * delta) ;
-		this->clientsPerWarehouse = 1;
-		this->localclientid = 0;
-	} else {
+        this->warehouseId = static_cast<uint32_t>(this->clientId * delta) ;
+        this->clientsPerWarehouse = 1;
+        this->localclientid = 0;
+    } else {
 
-		uint32_t idx = 0;
-		for( ; idx < config->globalNumberOfWarehouses; idx++){
-			if(this->clientId>=config->warehouseToLockServer[idx] && this->clientId<config->warehouseToLockServer[idx+1]){
-				//found 
-				break;
-			}
-		}
+        uint32_t idx = 0;
+        for( ; idx < config->globalNumberOfWarehouses; idx++){
+            if(this->clientId>=config->warehouseToLockServer[idx] && this->clientId<config->warehouseToLockServer[idx+1]){
+                //found 
+                break;
+            }
+        }
 
-		this->warehouseId = idx;
-		this->clientsPerWarehouse = config->warehouseToLockServer[idx+1] - config->warehouseToLockServer[idx];
-		this->localclientid = this->clientId - config->warehouseToLockServer[idx];
-	} 
+        this->warehouseId = idx;
+        this->clientsPerWarehouse = config->warehouseToLockServer[idx+1] - config->warehouseToLockServer[idx];
+        this->localclientid = this->clientId - config->warehouseToLockServer[idx];
+    } 
 
-	this->fileLocation = fileLocation;
+    this->fileLocation = fileLocation;
 
-	this->globalTableSize = config->globalNumberOfLocks;
+    this->globalTableSize = config->globalNumberOfLocks;
 }
 
 ReplayClient::~ReplayClient() {
@@ -57,122 +57,122 @@ ReplayClient::~ReplayClient() {
 
 void ReplayClient::generate() {
 
-	hdb::transactions::Transaction *item = NULL;
-	uint64_t currentTransactionId = 0;
+    hdb::transactions::Transaction *item = NULL;
+    uint64_t currentTransactionId = 0;
 
-	uint64_t transactioncounter = 0;
-	uint64_t skip = 0; 
+    uint64_t transactioncounter = 0;
+    uint64_t skip = 0; 
 
- 	transactions.reserve(numberOfTransactions);
+     transactions.reserve(numberOfTransactions);
 
  
-	// Check binary first. 
-	std::ostringstream stringStream;
-  	stringStream << fileLocation << "/wh" << this->warehouseId + 1 << "_" << numberOfTransactions << "_" <<localclientid<< "_" << clientsPerWarehouse;
+    // Check binary first. 
+    std::ostringstream stringStream;
+      stringStream << fileLocation << "/wh" << this->warehouseId + 1 << "_" << numberOfTransactions << "_" <<localclientid<< "_" << clientsPerWarehouse;
 
-	//sprintf(fileName, "%s/wh%06d_%u_%u_%u.bin", fileLocation.c_str(), this->warehouseId + 1,numberOfTransactions,localclientid,clientsPerWarehouse);
-	for(std::string str : config->transaction_constraints){
-		stringStream << "_";
-		stringStream << str;
-	}
-	stringStream << ".bin";
+    //sprintf(fileName, "%s/wh%06d_%u_%u_%u.bin", fileLocation.c_str(), this->warehouseId + 1,numberOfTransactions,localclientid,clientsPerWarehouse);
+    for(std::string str : config->transaction_constraints){
+        stringStream << "_";
+        stringStream << str;
+    }
+    stringStream << ".bin";
 
-	std::string copyOfStr = stringStream.str();
+    std::string copyOfStr = stringStream.str();
 
     
     std::ifstream ifs(copyOfStr.c_str());
 
     if(ifs.good()) { // file exist 
-     	boost::archive::binary_iarchive ia(ifs);
-     	uint32_t size = 0;
-     	ia >> size;
+         boost::archive::binary_iarchive ia(ifs);
+         uint32_t size = 0;
+         ia >> size;
         transactions.resize(size);
         ia >> boost::serialization::make_array(transactions.data(), size);
-     	return; 
+         return; 
     }
       DLOG_ALWAYS("ReplayClient", "binary did not exist");
 //  return; 
-	char fileName[1024];
-	memset(fileName, 0, 1024);
-	sprintf(fileName, "%s/wh%06d.csv", fileLocation.c_str(), this->warehouseId + 1 );
-	FILE *file = fopen(fileName, "r");
+    char fileName[1024];
+    memset(fileName, 0, 1024);
+    sprintf(fileName, "%s/wh%06d.csv", fileLocation.c_str(), this->warehouseId + 1 );
+    FILE *file = fopen(fileName, "r");
 
-	DLOG_ALWAYS("ReplayClient", "Parsing trace...");
+    DLOG_ALWAYS("ReplayClient", "Parsing trace...");
 
-	while (transactions.size() < numberOfTransactions) {
+    while (transactions.size() < numberOfTransactions) {
 
-		uint64_t transactionId;
-		uint64_t lockId;
-		char lockMode[2];
-		char queryType[16];
+        uint64_t transactionId;
+        uint64_t lockId;
+        char lockMode[2];
+        char queryType[16];
 
-		char lineBuffer[128];
-		bool validRead = (fgets(lineBuffer, sizeof(lineBuffer), file) != NULL);
-		if(validRead){
-			int readItems = sscanf(lineBuffer, "%lu,%lu,%2[^,],%s", &transactionId, &lockId, lockMode, queryType);
-			validRead = (readItems == 4);
-		}
-		if (!validRead) {
-			if (skip != transactionId && item != NULL) {
-				transactions.push_back(*item);
-			}
-		        delete item;
+        char lineBuffer[128];
+        bool validRead = (fgets(lineBuffer, sizeof(lineBuffer), file) != NULL);
+        if(validRead){
+            int readItems = sscanf(lineBuffer, "%lu,%lu,%2[^,],%s", &transactionId, &lockId, lockMode, queryType);
+            validRead = (readItems == 4);
+        }
+        if (!validRead) {
+            if (skip != transactionId && item != NULL) {
+                transactions.push_back(*item);
+            }
+                delete item;
 
             //stop processing
-			break;
-		}
+            break;
+        }
 
 
-		if(skip == transactionId){
-			continue;
-		}
+        if(skip == transactionId){
+            continue;
+        }
 
-		if (transactionId != currentTransactionId) { // new transaction
+        if (transactionId != currentTransactionId) { // new transaction
 
-			
-			if (item != NULL) {
-				if(item->requests.size() < 750) {
-					transactions.push_back(*item);
-				} else {
-					DLOG_ALWAYS("ReplayClient", "Ignoring transaction that has %lu locks", item->requests.size());
-				}
-				delete item;
-				item = NULL;
-			}
+            
+            if (item != NULL) {
+                if(item->requests.size() < 750) {
+                    transactions.push_back(*item);
+                } else {
+                    DLOG_ALWAYS("ReplayClient", "Ignoring transaction that has %lu locks", item->requests.size());
+                }
+                delete item;
+                item = NULL;
+            }
 
-			currentTransactionId = transactionId;
+            currentTransactionId = transactionId;
 
-			// check constraints
-			if( !config->transaction_constraints.empty() ){
-				// if not in the list
-				if (std::find(config->transaction_constraints.begin(), config->transaction_constraints.end(), queryType) ==  config->transaction_constraints.end()){
-					skip = transactionId;
-					continue;
-				}
-			}
+            // check constraints
+            if( !config->transaction_constraints.empty() ){
+                // if not in the list
+                if (std::find(config->transaction_constraints.begin(), config->transaction_constraints.end(), queryType) ==  config->transaction_constraints.end()){
+                    skip = transactionId;
+                    continue;
+                }
+            }
 
-			transactioncounter++;
+            transactioncounter++;
 
-			if( (transactioncounter - 1) % clientsPerWarehouse != localclientid){
-				skip = transactionId;
-				continue;
-			}
+            if( (transactioncounter - 1) % clientsPerWarehouse != localclientid){
+                skip = transactionId;
+                continue;
+            }
  
-			// the trace has only one type per transaction
-			item = new hdb::transactions::Transaction(hdb::transactions::DATA_MODE_FROM_STRING(queryType));
-			DLOG("ReplayClient", "Starting new transaction");
-		} 
-		
+            // the trace has only one type per transaction
+            item = new hdb::transactions::Transaction(hdb::transactions::DATA_MODE_FROM_STRING(queryType));
+            DLOG("ReplayClient", "Starting new transaction");
+        } 
+        
 
-		DLOG("ReplayClient", "Read workload item (%lu %lu %s %s).", transactionId, lockId, lockMode, queryType);
-		item->requests.push_back(lockid_mode_pair_t(lockId , hdb::locktable::LOCK_MODE_FROM_STRING(lockMode)));
-	}
+        DLOG("ReplayClient", "Read workload item (%lu %lu %s %s).", transactionId, lockId, lockMode, queryType);
+        item->requests.push_back(lockid_mode_pair_t(lockId , hdb::locktable::LOCK_MODE_FROM_STRING(lockMode)));
+    }
 
-	fclose(file);
+    fclose(file);
 
-//	 printf("Saving %s\n", copyOfStr.c_str());
+//     printf("Saving %s\n", copyOfStr.c_str());
 
-	std::ofstream ofs(copyOfStr.c_str());
+    std::ofstream ofs(copyOfStr.c_str());
     {
         boost::archive::binary_oarchive oa(ofs);
         uint32_t size  = transactions.size();
@@ -180,13 +180,13 @@ void ReplayClient::generate() {
         oa << boost::serialization::make_array(transactions.data(), size);
     }
        
-//	DLOG("ReplayClient", "Client %d finished reading file and has %lu transactions", config->internalRank, transactions.size());
+//    DLOG("ReplayClient", "Client %d finished reading file and has %lu transactions", config->internalRank, transactions.size());
 
 }
 
 void ReplayClient::execute() {
 
-	tpccExecute(warehouseId, numberOfTransactions);
+    tpccExecute(warehouseId, numberOfTransactions);
 }
 
 } /* namespace transactions */
